@@ -17,6 +17,8 @@ Window {
     BatteryLevelIndicator {
         anchors.fill: parent
 
+        isOk: razerMouse.isOk
+        reason: razerMouse.reason
         batteryLevel: razerMouse.batteryLevel
         isCharging: razerMouse.isCharging
 

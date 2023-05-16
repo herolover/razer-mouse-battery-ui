@@ -9,8 +9,14 @@ RazerMouseBattery::RazerMouseBattery(QObject *parent)
     connect(&m_process, &QProcess::finished, [this]() {
         QByteArray output = m_process.readAllStandardOutput();
         auto document = QJsonDocument::fromJson(output);
-        setBatteryLevel(document["BatteryLevel"].toDouble());
-        setIsCharging(document["IsCharging"].toBool());
+        if (document["Status"].toString() == "OK") {
+            setIsOk(true);
+            setBatteryLevel(document["BatteryLevel"].toDouble());
+            setIsCharging(document["IsCharging"].toBool());
+        } else {
+            setIsOk(false);
+            setReason(document["Reason"].toString());
+        }
     });
 }
 
@@ -56,4 +62,30 @@ void RazerMouseBattery::setCommandPath(const QString &newCommandPath)
 void RazerMouseBattery::update()
 {
     m_process.start(commandPath());
+}
+
+bool RazerMouseBattery::isOk() const
+{
+    return m_isOk;
+}
+
+void RazerMouseBattery::setIsOk(bool newIsOk)
+{
+    if (m_isOk == newIsOk)
+        return;
+    m_isOk = newIsOk;
+    emit isOkChanged();
+}
+
+QString RazerMouseBattery::reason() const
+{
+    return m_reason;
+}
+
+void RazerMouseBattery::setReason(const QString &newReason)
+{
+    if (m_reason == newReason)
+        return;
+    m_reason = newReason;
+    emit reasonChanged();
 }

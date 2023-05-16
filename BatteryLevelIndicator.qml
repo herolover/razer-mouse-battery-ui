@@ -5,6 +5,8 @@ import QtQuick.Shapes
 Item {
     id: root
 
+    property bool isOk: false
+    property string reason: ""
     property real batteryLevel: 0
     property bool isCharging: false
 
@@ -43,7 +45,8 @@ Item {
         font.bold: true
         font.pointSize: root.radius * 0.3
         fontSizeMode: Text.Fit
+        wrapMode: Text.WordWrap
 
-        text: batteryLevel.toFixed(1) + " %" + (isCharging ? "\n⚡" : "")
+        text: isOk ? (batteryLevel.toFixed(1) + " %" + (isCharging ? "\n⚡" : "")) : reason
     }
 }
