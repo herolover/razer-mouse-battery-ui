@@ -17,6 +17,7 @@ Item {
 
     Shape {
         anchors.fill: parent
+        visible: isOk
 
         ShapePath {
             fillColor: "transparent"
